@@ -1,0 +1,4 @@
+# Dépendances
+node_modules/
+#fichiers systeme Mac
+.DS_Store
