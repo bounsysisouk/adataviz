@@ -12,12 +12,30 @@ const recupererVelociste = async () => {
 };
 recupererVelociste()
     .then((data) => {
-        compteur.textContent = `${velocistes.length} velocistes trouvés`; 
         console.log(data)
+        let nbAffiche = 0
         velocistes.forEach((velociste) => {
-            listeVelocistes.innerHTML += 
-            `<h3>${velociste.nom_enseigne}</h3> 
-            <p>${velociste.adresse} ${velociste.commune}</p>`;
+            let adresse = "";
+            let nomEnseigne = "";
+            if (velociste.adresse === null && velociste.nom_enseigne === null) {
+                return
+            }
+            nbAffiche++
+            compteur.textContent = `${nbAffiche} velocistes affichés`
+            if (velociste.adresse != null) {
+                adresse = velociste.adresse;
+            } else {
+                adresse = "Adresse non renseignée"
+            }
+            if (velociste.nom_enseigne != null) {
+                nomEnseigne = velociste.nom_enseigne
+            } else {
+                nomEnseigne = "Nom Manquant"
+            }
+
+            listeVelocistes.innerHTML +=
+                `<h3>${nomEnseigne}</h3> 
+                <p>${adresse} ${velociste.commune}</p>`;
         })
     })
     .catch((erreur) => {
