@@ -1,25 +1,3 @@
-export const verifierDossier = (chemin) => existsSync(chemin)
-
-//STATUT D'UN PROJET
-
-export const afficherStatut = (nom, ok) => {
-  const icone = ok ? "✅" : "❌"
-  console.log(`${icone} dossier du projet ${nom}`)
-}
-/*
-afficherStatut("adapage", true)
-afficherStatut("adalgo",  false)
-*/
-
-//LISTE D'ERREURS
-
-export const afficherErreurs = (erreurs) => {
-  erreurs.forEach((e) => console.log(`- ${e}`))
-}
-/*
-afficherErreurs(["le repository git n'est pas initialisé", "il manque index.js"])
-*/
-
 //FORMATER UNE LISTE
 
 export const formaterListe = (items) => {
@@ -42,27 +20,66 @@ console.log(messageFichiers(["index.js"]))
 console.log(messageFichiers(["index.js", "style.css"]))
 */
 
-//POURCENTAGE ARRONDI
+// FILTRER PAR NOM
 
-export const afficherPourcentage = (ok, total) => {
-  const pct   = Math.round((ok / total) * 100)
-  const icone = ok === total ? "✅" : "❌"
-  console.log(`${icone} ${pct}% des projets sont initialisés correctement (${ok}/${total})`)
-}
-/*
-afficherPourcentage(2,  12)
-afficherPourcentage(12, 12)
-*/
+export const filtrerParNom = (velocistes, recherche) => {
+    return velocistes.filter((velociste) => {
+      return velociste.nom_enseigne != null &&
+          velociste.nom_enseigne.toLowerCase().includes(recherche.toLowerCase());
+    });
+};
+// EXTRAIRE SERVICES
 
-//AFFICHER UN BLOC PROJET
+export const extraireServices = (velociste) => {
+    const services = []
+    // Regroupe les champs de l'API concernant la vente 
+    const champsVente =[
+        velociste.vente_classique_mecanique,
+        velociste.vente_classique_vae,
+        velociste.vente_cargo_mecanique,
+        velociste.vente_cargo_ae,
+        velociste.vente_pliant_mecanique,
+        velociste.vente_pliant_ae
+    ];
+    // Regroupe les champs de l'API concernant la location    
+    const champsLocation =[
+        velociste.location_classique_mecanique,
+        velociste.location_classique_vae,
+        velociste.location_cargo_mecanique,
+        velociste.location_cargo_ae,
+        velociste.location_pliant_mecanique,
+        velociste.location_pliant_ae
+    ];
+    // Regroupe le champ de l'API concernant la réparation
+    const champsReparations =[
+        velociste.reparation_hors_sav,
+        velociste.rdv_reparation
+    ];
 
-export const icone = projet.ok ? "✅" : "❌"
-console.log(`${icone} dossier du projet ${projet.nom}`)
-projet.erreurs.forEach((e) => console.log(`- ${e}`))
+    if (champsVente.some((valeur) => valeur === 1)) {
+            services.push("Vente de vélos");
+    }
+    if (champsLocation.some((valeur) => valeur === 1)) {
+            services.push("Location de vélos");    
+    }
+    if (champsReparations.some((valeur) => valeur === 1)) {
+            services.push("Réparation");
+    }
+    return services;
+};
+
+   
+   
+   
+ 
 
 
 const config = {
     "version" : 1.0,
+    filtrerParNom,
+    extraireServices
+
 };
+
 
 export default config

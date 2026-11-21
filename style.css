@@ -38,27 +38,27 @@ section h2 {
     font-weight: bold;
 }
 /* Grille des velociste */
-#liste-velociste {
+#liste-velocistes {
     /* mettre les cartes en grilles */
     display: grid; 
-    grid-template-columns: repeat(auto-fix, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
 }
 /* Carte d'un velociste */
-.carte-velocite {
+.carte-velociste {
     background-color: white;
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-.carte-velocite h3 {
+.carte-velociste h3 {
     color: #174c3c;
     margin-bottom: 1rem;
 }
-.carte-velocite p {
+.carte-velociste p {
     margin-bottom: 0.5rem;
 }
-.carte-velocite a {
+.carte-velociste a {
     color: #176b52;
     overflow-wrap: anywhere;
 }
