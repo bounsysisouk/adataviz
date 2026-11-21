@@ -85,10 +85,10 @@ console.log("Nombre de vélocistes :", liste.length);
 console.log("Test ECOX :", utils.filtrerParNom(liste, "ECOX").length);
 afficherVelociste(liste)
 
-    recherche.addEventListener("input", () => {
-        
-        const resultats = utils.filtrerParNom(liste, recherche.value.trim())
+recherche.addEventListener("input", () => {
 
-        
-        afficherVelociste(resultats)
-    })
+    const resultats = utils.filtrerParNom(liste, recherche.value.trim())
+
+
+    afficherVelociste(resultats)
+})
