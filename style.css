@@ -42,9 +42,9 @@ section h2 {
   background-color: white;
   font-size: 1rem;
   color: #222;
-  transition:
+  transition:       /* Rend le changement visuel progressif */
     border-color 0.3s,
-    box-shadow 0.3s; /* rend le changement visuel progressif */
+    box-shadow 0.3s;
 }
 /* Interaction avec le champ */
 #recherche-velociste:focus {
@@ -58,53 +58,27 @@ section h2 {
   font-weight: bold;
 }
 /* Grille des velociste */
-<<<<<<< Updated upstream
 #liste-velocistes {
-    /* mettre les cartes en grilles */
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-}
-/* Carte d'un velociste */
-.carte-velociste {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-.carte-velociste h3 {
-    color: #174c3c;
-    margin-bottom: 1rem;
-}
-.carte-velociste p {
-    margin-bottom: 0.5rem;
-}
-.carte-velociste a {
-    color: #176b52;
-    overflow-wrap: anywhere;
-=======
-#liste-velociste {
   /* mettre les cartes en grilles */
   display: grid;
-  grid-template-columns: repeat(auto-fix, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 /* Carte d'un velociste */
-.carte-velocite {
+.carte-velociste {
   background-color: white;
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-.carte-velocite h3 {
+.carte-velociste h3 {
   color: #174c3c;
   margin-bottom: 1rem;
 }
-.carte-velocite p {
+.carte-velociste p {
   margin-bottom: 0.5rem;
 }
-.carte-velocite a {
+.carte-velociste a {
   color: #176b52;
   overflow-wrap: anywhere;
->>>>>>> Stashed changes
 }
