@@ -1,39 +1,31 @@
-//FORMATER UNE LISTE
-
-export const formaterListe = (items) => {
-  if (items.length === 1) return items[0]
-  if (items.length === 2) return items.join(" et ")
-  const debut = items.slice(0, -1).join(", ")
-  return debut + " et " + items.at(-1)
-}
-/*
-console.log(formaterListe(["index.js"]))
-console.log(formaterListe(["index.js", "style.css"]))
-console.log(formaterListe(["a", "b", "c"]))
-*/
-
-//MESSAGE FICHIERS MANQUANTS
-
-export const messageFichiers = (manquants) => `il manque ${formaterListe(manquants)}`
-/*
-console.log(messageFichiers(["index.js"]))
-console.log(messageFichiers(["index.js", "style.css"]))
-*/
-
-// FILTRER PAR NOM
+// RECHERCHE PAR NOM
 
 export const filtrerParNom = (velocistes, recherche) => {
     return velocistes.filter((velociste) => {
-      return velociste.nom_enseigne != null &&
-          velociste.nom_enseigne.toLowerCase().includes(recherche.toLowerCase());
+        return velociste.nom_enseigne != null &&
+            velociste.nom_enseigne.toLowerCase().includes(recherche.toLowerCase());
     });
 };
+
+// COMBINE RECHERHCE PAR NOM ET COMMUNE
+
+export const filtrerVelocistes = (velocistes, recherche, commune) => {
+    const parNom = filtrerParNom(velocistes, recherche);
+
+    if (commune === "") {
+        return parNom
+    }
+    return parNom.filter((velociste) => {
+        return velociste.commune === commune;
+    });
+};
+
 // EXTRAIRE SERVICES
 
 export const extraireServices = (velociste) => {
     const services = []
     // Regroupe les champs de l'API concernant la vente 
-    const champsVente =[
+    const champsVente = [
         velociste.vente_classique_mecanique,
         velociste.vente_classique_vae,
         velociste.vente_cargo_mecanique,
@@ -42,7 +34,7 @@ export const extraireServices = (velociste) => {
         velociste.vente_pliant_ae
     ];
     // Regroupe les champs de l'API concernant la location    
-    const champsLocation =[
+    const champsLocation = [
         velociste.location_classique_mecanique,
         velociste.location_classique_vae,
         velociste.location_cargo_mecanique,
@@ -51,33 +43,46 @@ export const extraireServices = (velociste) => {
         velociste.location_pliant_ae
     ];
     // Regroupe le champ de l'API concernant la réparation
-    const champsReparations =[
+    const champsReparations = [
         velociste.reparation_hors_sav,
         velociste.rdv_reparation
     ];
 
     if (champsVente.some((valeur) => valeur === 1)) {
-            services.push("Vente de vélos");
+        services.push("Vente de vélos");
     }
     if (champsLocation.some((valeur) => valeur === 1)) {
-            services.push("Location de vélos");    
+        services.push("Location de vélos");
     }
     if (champsReparations.some((valeur) => valeur === 1)) {
-            services.push("Réparation");
+        services.push("Réparation");
     }
     return services;
 };
 
-   
-   
-   
- 
+// FORMATER LES DONNEES (TRANSFORME DES DONNEE DE L'API)
+
+export const formaterDonnee = (item) => {
+    return {
+        nomEnseigne: item.nom_enseigne ?? "Nom manquant",
+        adresse: item.adresse ?? "Adresse non renseignée",
+        commune: item.commune ?? "Commune non renseignée",
+        codePostal: item.code_postal ?? "Non renseigné",
+        adresseEmail: item.mail ?? "Email non renseigné",
+        services: extraireServices(item)
+    };
+};
+
+
+
 
 
 const config = {
-    "version" : 1.0,
+    "version": 1.0,
     filtrerParNom,
-    extraireServices
+    filtrerVelocistes,
+    extraireServices,
+    formaterDonnee
 
 };
 

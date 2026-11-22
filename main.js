@@ -3,6 +3,7 @@ import utils from "./utils.js"
 const listeVelocistes = document.getElementById("liste-velocistes")
 const recherche = document.getElementById("recherche-velociste")
 const compteur = document.getElementById("compteur")
+const filtreCommune = document.getElementById("liste-commune")
 const url = "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_velocistes-nantes-metropole/records?limit=-1"
 const recupererVelociste = async () => {
     try {
@@ -23,53 +24,22 @@ const afficherVelociste = (liste) => {
     let nbAffiche = 0
 
     liste.forEach((velociste) => {
-        console.log(velociste)
-        // Déclaration des vaiables du velociste 
-        let adresse = "";
-        let nomEnseigne = "";
-        let commune = "";
-        let adresseEmail = "";
-        let codePostal = "";
 
         // Vérification des informations manquantes  
         if (velociste.adresse === null && velociste.nom_enseigne === null) {
             return
         }
+        const velocisteFormate = utils.formaterDonnee(velociste);
         nbAffiche++
-        // Récupération des informations (nom, adresse, commune, Email, site internet)        
-        if (velociste.adresse != null) {
-            adresse = velociste.adresse;
-        } else {
-            adresse = "Adresse non renseignée"
-        }
-        if (velociste.nom_enseigne != null) {
-            nomEnseigne = velociste.nom_enseigne
-        } else {
-            nomEnseigne = "Nom Manquant"
-        }
-        if (velociste.commune != null) {
-            commune = velociste.commune
-        } else {
-            commune = "Commune non renseignée"
-        }
-        if (velociste.code_postal != null) {
-            codePostal = velociste.code_postal
-        } else {
-            codePostal = "Non renseigné"
-        }
-        if (velociste.mail != null) {
-            adresseEmail = velociste.mail
-        } else {
-            adresseEmail = "Non renseigné"
-        }
+
         // Vérificatios des services Proposés
-        const servicesProposes = utils.extraireServices(velociste);
+        const servicesProposes = velocisteFormate.services;
         // Création des cartes HTML // 
         listeVelocistes.innerHTML +=
             `<article class="carte-velociste">
-                <h3>${nomEnseigne}</h3> 
-                <p>${adresse}, ${codePostal} ${commune}</p> 
-                <p>${adresseEmail}</p>
+                <h3>${velocisteFormate.nomEnseigne}</h3> 
+                <p>${velocisteFormate.adresse}, ${velocisteFormate.codePostal} ${velocisteFormate.commune}</p> 
+                <p>${velocisteFormate.adresseEmail}</p>
                 <section>
                     <h4>Services proposés</h4>
                         <ul>
@@ -78,17 +48,41 @@ const afficherVelociste = (liste) => {
                 </section>
             </article>`;
     })
-    compteur.textContent = `${nbAffiche} velocistes affichés`
+    compteur.textContent = `${nbAffiche} velocistes trouvés`
 }
 const liste = await recupererVelociste()
-console.log("Nombre de vélocistes :", liste.length);
-console.log("Test ECOX :", utils.filtrerParNom(liste, "ECOX").length);
+// Récupére les communes de chaque vélociste avec map()
+const communes = liste.map((velociste) => velociste.commune);
+// Utilisation de Set pour supprimer les doublons de communes 
+const communesUniques = [...new Set(communes)]
+/* Convertir le Set en tableau grâce à l'opérateur spread (...)
+ afin de pouvoir parcourir les communes comme un tableau */
+
 afficherVelociste(liste)
 
+// ECOUTE DE LA BAR DE RECHERCHE
 recherche.addEventListener("input", () => {
+    const resultats = utils.filtrerVelocistes(
+        liste,
+        recherche.value.trim(),
+        filtreCommune.value
+    );
+    afficherVelociste(resultats);
+});
 
-    const resultats = utils.filtrerParNom(liste, recherche.value.trim())
+// FILTRAGE PAR COMMUNE
+filtreCommune.innerHTML = '<option value="">Toutes les communes</option>' +
+    communesUniques.map((commune) => {
+        return `<option value="${commune}">${commune}</option>`;
+    }).join("");
 
+// ECOUTE DU FILTRAGE PAR COMMUNE 
+filtreCommune.addEventListener("change", () => {
+    const resultats = utils.filtrerVelocistes(
+        liste,
+        recherche.value.trim(),
+        filtreCommune.value
+    );
 
-    afficherVelociste(resultats)
-})
+    afficherVelociste(resultats);
+});
