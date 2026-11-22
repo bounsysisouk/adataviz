@@ -3,7 +3,7 @@
 export const filtrerParNom = (velocistes, recherche) => {
     return velocistes.filter((velociste) => {
         return velociste.nom_enseigne != null &&
-            velociste.nom_enseigne.toLowerCase().includes(recherche.toLowerCase());
+            velociste.nom_enseigne.trim().toLowerCase().includes(recherche.trim().toLowerCase());
     });
 };
 
@@ -47,7 +47,7 @@ export const extraireServices = (velociste) => {
         velociste.reparation_hors_sav,
         velociste.rdv_reparation
     ];
-
+    // Ajout les champs si au moins un element correspond avec (.some())
     if (champsVente.some((valeur) => valeur === 1)) {
         services.push("Vente de vélos");
     }
@@ -60,7 +60,7 @@ export const extraireServices = (velociste) => {
     return services;
 };
 
-// FORMATER LES DONNEES (TRANSFORME DES DONNEE DE L'API)
+// FORMATER LES DONNEES (TRANSFORME LES DONNEE DE L'API)
 
 export const formaterDonnee = (item) => {
     return {
