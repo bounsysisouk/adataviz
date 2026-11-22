@@ -47,7 +47,7 @@ export const extraireServices = (velociste) => {
         velociste.reparation_hors_sav,
         velociste.rdv_reparation
     ];
-    // Ajout les champs si au moin un element correspond avec (.some())
+    // Ajout les champs si au moins un element correspond avec (.some())
     if (champsVente.some((valeur) => valeur === 1)) {
         services.push("Vente de vélos");
     }
