@@ -52,6 +52,11 @@ L'application affiche pour chaque vélociste :
 
    npm test
 
+
+5. Lien
+
+🔗 [Voir le site en ligne](https://adataviz-bouns.netlify.app)   
+
 ---
 
 📁 Structure du projet

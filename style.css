@@ -79,7 +79,7 @@ section h2 {
   transition:       /* Rend le changement visuel progressif */
     border-color 0.3s,
     box-shadow 0.3s;
-    height: 48px;
+  height: 48px;
 }
 .filtre select {
   appearance: none;
