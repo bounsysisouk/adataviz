@@ -64,6 +64,7 @@ export const extraireServices = (velociste) => {
 
 export const formaterDonnee = (item) => {
     return {
+        id: String(item.ojectid),
         nomEnseigne: item.nom_enseigne ?? "Nom manquant",
         adresse: item.adresse ?? "Adresse non renseignée",
         commune: item.commune ?? "Commune non renseignée",
