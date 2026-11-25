@@ -61,10 +61,14 @@ export const extraireServices = (velociste) => {
 };
 
 // FORMATER LES DONNEES (TRANSFORME LES DONNEE DE L'API)
-
+/**
+ * formatage de donnee
+ * @param {*} item 
+ * @returns 
+ */
 export const formaterDonnee = (item) => {
     return {
-        id: String(item.ojectid),
+        id: String(item.objectid),
         nomEnseigne: item.nom_enseigne ?? "Nom manquant",
         adresse: item.adresse ?? "Adresse non renseignée",
         commune: item.commune ?? "Commune non renseignée",
@@ -74,6 +78,21 @@ export const formaterDonnee = (item) => {
     };
 };
 
+export const recupererVelociste = async () => {
+    const url = "https://data.nantesmetropole.fr/api/explore/v2.1/catalog/datasets/244400404_velocistes-nantes-metropole/records?limit=-1"
+    try {
+        const reponse = await fetch(url);
+        if (!reponse.ok) {
+            throw new Error("Erreur HTTP " + reponse.status)
+        }
+        const data = await reponse.json();
+        return data.results;
+
+    } catch (erreur) {
+        console.error("Erreur :", erreur)
+        return []
+    };
+}
 
 
 
@@ -83,7 +102,8 @@ const config = {
     filtrerParNom,
     filtrerVelocistes,
     extraireServices,
-    formaterDonnee
+    formaterDonnee,
+    recupererVelociste
 
 };
 
